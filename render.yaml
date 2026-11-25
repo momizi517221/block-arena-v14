@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: block-arena
+    runtime: node
+    region: singapore
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
