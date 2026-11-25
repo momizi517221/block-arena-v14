@@ -1,0 +1,16 @@
+'use strict';
+const {Match,HZ}=require('./simulation');
+const A=require('./public/shared');
+const TARGETS=[[-3,9],[3,15],[0,22],[-10,15],[11,18]];
+class Rooms {
+ constructor(){this.rooms=new Map();}
+ enter(code,action,name,type){if(typeof code!=='string'||!/^\d{4}$/.test(code))return {error:'4桁の数字を入力してください'};let room=this.rooms.get(code);if(action==='create'){if(room)return {error:'その部屋番号は使用中です'};room={code,match:new Match(),host:0,phase:'warmup',ready:new Set(),returned:new Set(),deadline:0,counter:0,dirty:true,results:[]};room.match.warmup=true;room.match.targets=TARGETS.map(([x,z],i)=>({...A.makePlayer(-i-1,'',1),x,z,hp:60,deadUntil:0,practiceTarget:true}));this.rooms.set(code,room);}else if(action!=='join'||!room)return {error:'部屋が見つかりません'};if(!['warmup','countdown'].includes(room.phase))return {error:'対戦中の部屋です'};let player=room.match.join(name,type);if(!player)return {error:'満員です'};if(!room.host)room.host=player.id;this.check(room);return {room,player};}
+ leave(r,id){r.match.leave(id);r.ready.delete(id);r.returned.delete(id);if(!r.match.players.size)this.rooms.delete(r.code);else{if(r.host===id)r.host=r.match.players.keys().next().value;this.check(r);}}
+ check(r){r.dirty=true;const all=r.match.players.size>0&&[...r.match.players.keys()].every(id=>r.ready.has(id));if(r.phase==='warmup'&&all){r.phase='countdown';r.deadline=r.match.tick+3*HZ;}else if(r.phase==='countdown'&&!all){r.phase='warmup';r.deadline=0;}else if(r.phase==='result'&&r.match.players.size&&[...r.match.players.keys()].every(id=>r.returned.has(id))){this.reset(r,'warmup');}}
+ ready(r,id,value){if(!['warmup','countdown'].includes(r.phase)||!r.match.players.has(id))return false;value?r.ready.add(id):r.ready.delete(id);this.check(r);return true;}
+ back(r,id){if(r.phase!=='result'||!r.match.players.has(id))return false;r.returned.add(id);this.check(r);return true;}
+ reset(r,phase){r.phase=phase;r.ready.clear();r.returned.clear();r.match.warmup=phase==='warmup';r.deadline=phase==='battle'?r.match.tick+180*HZ:0;r.results=[];let i=0;for(let p of r.match.players.values()){let seq=p.input.seq;Object.assign(p,A.makePlayer(p.id,p.name,p.type,i++),{input:{x:0,z:0,yaw:0,pitch:-.1,f:false,j:false,fps:false,seq},ack:seq,lastInput:r.match.time,camera:null,deaths:0});}for(let t of r.match.targets){t.hp=60;t.deadUntil=0;}r.match.events=[];r.dirty=true;r.resetPending=true;}
+ step(r){if(r.phase==='result')return;if(r.phase==='countdown'&&r.match.tick>=r.deadline)this.reset(r,'battle');if(r.phase==='battle'&&r.match.tick>=r.deadline){r.phase='result';r.results=[...r.match.players.values()].map(p=>({id:p.id,name:p.name,type:p.type,kills:p.kills,deaths:p.deaths||0})).sort((a,b)=>b.kills-a.kills||a.deaths-b.deaths||a.id-b.id);r.results.forEach((p,i)=>p.rank=i&&p.kills===r.results[i-1].kills?r.results[i-1].rank:i+1);r.dirty=true;return;}r.match.step();}
+ state(r){return {kind:'lobby',code:r.code,host:r.host,phase:r.phase,deadline:r.deadline,tick:r.match.tick,players:[...r.match.players.values()].map(p=>({id:p.id,name:p.name,type:p.type,ready:r.ready.has(p.id),returned:r.returned.has(p.id)})),targets:r.match.targets.map(t=>({id:t.id,x:t.x,z:t.z,type:1,hp:t.hp,practiceTarget:true})),results:r.results};}
+}
+module.exports={Rooms};
