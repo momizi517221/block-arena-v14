@@ -1,0 +1,99 @@
+{
+  "weapons": {
+    "pistol": {
+      "name": "ピストル",
+      "damage": 10,
+      "headDamage": 25,
+      "fireInterval": 0.3,
+      "magazine": 12,
+      "reload": 1,
+      "speed": 1.15,
+      "adsSpeed": 0.9,
+      "zoom": 1.2,
+      "range": 40,
+      "pellets": 1,
+      "spread": 0
+    },
+    "smg": {
+      "name": "サブマシンガン",
+      "damage": 4,
+      "headDamage": 10,
+      "fireInterval": 0.09,
+      "magazine": 25,
+      "reload": 1.4,
+      "speed": 1.05,
+      "adsSpeed": 0.85,
+      "zoom": 1.3,
+      "range": 35,
+      "pellets": 1,
+      "spread": 0
+    },
+    "shotgun": {
+      "name": "ショットガン",
+      "damage": 6,
+      "headDamage": 12,
+      "fireInterval": 0.85,
+      "magazine": 6,
+      "reload": 2,
+      "speed": 1,
+      "adsSpeed": 0.8,
+      "zoom": 1.2,
+      "range": 22,
+      "pellets": 8,
+      "spread": 0.065
+    },
+    "assault": {
+      "name": "アサルトライフル",
+      "damage": 5,
+      "headDamage": 15,
+      "fireInterval": 0.14,
+      "magazine": 15,
+      "reload": 1.5,
+      "speed": 0.95,
+      "adsSpeed": 0.75,
+      "zoom": 1.6,
+      "range": 60,
+      "pellets": 1,
+      "spread": 0
+    },
+    "sniper": {
+      "name": "スナイパー",
+      "damage": 55,
+      "headDamage": 100,
+      "fireInterval": 1.4,
+      "magazine": 5,
+      "reload": 2.5,
+      "speed": 0.85,
+      "adsSpeed": 0.6,
+      "zoom": 3,
+      "range": 90,
+      "pellets": 1,
+      "spread": 0
+    }
+  },
+  "balance": {
+    "maxHP": 100,
+    "regenSeconds": 5,
+    "regenAmount": 1,
+    "healSeconds": 5,
+    "healAmount": 20,
+    "healSpeed": 0.5,
+    "pandaSpeed": 0.8,
+    "pandaArmor": 0.5,
+    "dogRange": 8,
+    "rabbitJumps": 2
+  },
+  "config": {
+    "size": 0.55,
+    "distance": 3.9,
+    "height": 2,
+    "jumpPower": 10.8,
+    "gravity": 33.75,
+    "turnSpeed": 12,
+    "speed": 4.6,
+    "fireInterval": 0.14,
+    "damage": 5,
+    "headDamage": 15,
+    "respawn": 3
+  }
+}
