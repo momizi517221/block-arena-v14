@@ -9,11 +9,11 @@ class Match {
  step(){this.time+=DT;this.tick++;const players=[...this.players.values()];for(let p of players){if(p.hp<=0){if(this.time>=p.deadUntil){let kills=p.kills,deaths=p.deaths||0,spawn=A.spawns[this.nextSpawn++%A.spawns.length],fresh=A.makePlayer(p.id,p.name,p.type);Object.assign(p,fresh,{x:spawn[0],z:spawn[1],kills,deaths,input:{...p.input,f:false,j:false,x:0,z:0},lastInput:this.time,ack:p.input.seq,camera:null});this.events.push({kind:'respawn',id:p.id});}else continue;}
  let i=this.time-p.lastInput>.35?{...p.input,x:0,z:0,f:false,j:false,heal:false,reload:false}:p.input;A.combat(p,i,DT);A.movement(p,i,DT);p.ack=i.seq;}
  if(this.warmup)for(let t of this.targets)if(t.hp<=0&&this.time>=t.deadUntil){t.hp=60;this.events.push({kind:'target',id:t.id,hp:t.hp});}
- const aimables=this.warmup?this.targets:players;for(let p of players){if(p.hp<=0)continue;const cam=p.camera=A.cameraFor(p,A.config,true,p.camera||null,DT),target=A.aimTarget(p,aimables,cam);A.aimBody(p,target.point,DT);if(!p.firing||this.time<p.nextShot)continue;p.nextShot=this.time+A.config.fireInterval;p.ammo--;let s=A.fire(p,aimables,cam),e=s.enemy,kill=false;if(e&&e.hp>0){e.hp=Math.max(0,e.hp-A.damageFor(e));if(e.hp===0){kill=true;e.deadUntil=this.time+A.config.respawn;if(!this.warmup){p.kills++;e.deaths=(e.deaths||0)+1;}e.firing=false;}}
+ const aimables=this.warmup?this.targets:players;for(let p of players){if(p.hp<=0)continue;const cam=p.camera=A.cameraFor(p,A.config,true,p.camera||null,DT),target=A.aimTarget(p,aimables,cam);A.aimBody(p,target.point,DT);if(!p.firing||this.time<p.nextShot)continue;p.nextShot=Math.max(this.time-DT,p.nextShot)+A.config.fireInterval;p.ammo--;let s=A.fire(p,aimables,cam),e=s.enemy,kill=false;if(e&&e.hp>0){e.hp=Math.max(0,e.hp-A.damageFor(e,s.headshot));if(e.hp===0){kill=true;e.deadUntil=this.time+A.config.respawn;if(!this.warmup){p.kills++;e.deaths=(e.deaths||0)+1;}e.firing=false;}}
  if(this.warmup&&e)this.events.push({kind:'target',id:e.id,hp:e.hp});
- this.events.push({kind:'shot',id:p.id,a:s.a,b:s.b,target:e?e.id:0,kill});}
+ this.events.push({kind:'shot',id:p.id,a:s.a,b:s.b,target:e?e.id:0,headshot:!!(e&&s.headshot),kill});}
  }
- snapshot(){return{kind:'state',tick:this.tick,time:this.time,players:[...this.players.values()].map(p=>[p.id,p.x,p.y,p.z,p.yaw,p.pitch,p.bodyYaw,p.gunPitch,p.hp,p.kills,p.phase,(p.moving?1:0)|(p.grounded?2:0)|(p.firing?4:0)|(p.fps?8:0)|(p.prevJump?16:0),p.vy,p.ack,p.deadUntil,p.ammo,p.healProgress,p.reloadProgress,p.jumps])};}
+ snapshot(){return{kind:'state',tick:this.tick,time:this.time,players:[...this.players.values()].map(p=>[p.id,p.x,p.y,p.z,p.yaw,p.pitch,p.bodyYaw,p.gunPitch,p.hp,p.kills,p.phase,(p.moving?1:0)|(p.grounded?2:0)|(p.firing?4:0)|(p.fps?8:0)|(p.prevJump?16:0)|(p.type<<5),p.vy,p.ack,p.deadUntil,p.ammo,p.healProgress,p.reloadProgress,p.jumps])};}
  drain(){return this.events.splice(0);}
 }
 module.exports={Match,MAX,HZ};
