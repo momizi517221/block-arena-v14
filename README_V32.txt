@@ -1,0 +1,1 @@
+V31 public version required. Overwrite public/index.html and public/client.html only. ADS visual zoom capped at 1.65x for visibility; same focal scale for FPS/TPS. Device-specific ADS hold/toggle stored in existing preferences. Existing server balance unchanged. Browser/real device testing not performed. Existing node tests: 31/31.
