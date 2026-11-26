@@ -102,7 +102,7 @@
   },
   "abilities": {
     "max": 100,
-    "regen": 2,
+    "regen": 4,
     "skillDelay": 2,
     "grapple": {
       "cost": 25,
