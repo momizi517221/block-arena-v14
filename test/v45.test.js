@@ -64,7 +64,7 @@ test('V45 lobby hides gameplay HUD and the enemy HP strip requires a recent hit'
 test('V45 exposes separate ADS sensitivity, aim-assist controls, outline and death summary', () => {
   assert.match(html, /adsSensitivity45/);
   assert.match(html, /assistCandidate45/);
-  assert.match(html, /drawOutline45/);
+  assert.match(html, /drawScreenOutline47/);
   assert.match(html, /showCombatSummary45/);
   assert.match(html, /combatDealt45/);
 });
