@@ -106,22 +106,22 @@
     "skillDelay": 2,
     "grapple": {
       "cost": 25,
-      "range": 25,
-      "speed": 3,
-      "duration": 2
+      "range": 35,
+      "speed": 4,
+      "duration": 2.5
     },
     "wall": {
       "cost": 35,
-      "duration": 8,
-      "hp": 1.5,
+      "duration": 10,
+      "hp": 2.25,
       "width": 4,
       "height": 2.5,
       "distance": 2
     },
     "scan": {
       "cost": 30,
-      "range": 20,
-      "duration": 3
+      "range": 30,
+      "duration": 5
     },
     "dash": {
       "cost": 20,
@@ -130,45 +130,44 @@
     },
     "gravity": {
       "cost": 30,
-      "range": 20,
-      "radius": 4,
-      "duration": 4,
-      "slow": 0.3,
-      "flight": 0.25
+      "range": 25,
+      "radius": 6,
+      "duration": 6,
+      "slow": 0.5,
+      "flight": 0.2
     },
     "overdrive": {
       "cost": 100,
-      "duration": 10,
-      "speed": 1.2,
-      "rate": 1.25,
-      "reload": 0.7
+      "duration": 12,
+      "speed": 1.3,
+      "rate": 1.4,
+      "reload": 0.55
     },
     "rewind": {
       "cost": 100,
-      "seconds": 5,
-      "record": 0.1
+      "seconds": 8,
+      "record": 0.1,
+      "heal": 0.3
     },
     "strike": {
       "cost": 100,
-      "range": 40,
-      "radius": 6,
-      "delay": 2,
-      "damage": 0.6
+      "range": 45,
+      "radius": 8,
+      "delay": 1.2,
+      "damage": 0.75
     },
     "slash": {
       "cost": 100,
-      "windup": 0.35,
-      "distance": 12,
-      "duration": 0.3,
-      "width": 3,
-      "damage": 0.55
+      "windup": 0.2,
+      "distance": 15,
+      "duration": 0.4,
+      "width": 5.5,
+      "damage": 0.7
     },
     "autoaim": {
       "cost": 100,
-      "duration": 6,
-      "range": 25,
-      "angle": 0.2617993877991494,
-      "track": 8
+      "duration": 8,
+      "range": 100
     }
   }
 }
