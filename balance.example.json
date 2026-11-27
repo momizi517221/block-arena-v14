@@ -66,11 +66,11 @@
       "name": "スナイパー",
       "damage": 55,
       "headDamage": 100,
-      "fireInterval": 1.4,
+      "fireInterval": 2.9,
       "magazine": 6,
       "reload": 2.5,
       "speed": 0.85,
-      "adsSpeed": 0.6,
+      "adsSpeed": 0.4,
       "zoom": 3,
       "range": 90,
       "pellets": 1,
@@ -120,7 +120,7 @@
     },
     "scan": {
       "cost": 30,
-      "range": 30,
+      "range": 45,
       "duration": 5
     },
     "dash": {
@@ -133,7 +133,7 @@
       "range": 25,
       "radius": 6,
       "duration": 6,
-      "slow": 0.5,
+      "slow": 0.7,
       "flight": 0.2
     },
     "overdrive": {
