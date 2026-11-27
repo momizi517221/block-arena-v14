@@ -44,9 +44,9 @@
       "zoom": 1.2,
       "range": 22,
       "pellets": 8,
-      "spread": 0.065,
+      "spread": 0.14,
       "chargeTime": 1.5,
-      "spreadMin": 0.4
+      "spreadMin": 0.8
     },
     "assault": {
       "name": "アサルトライフル",
@@ -66,7 +66,7 @@
       "name": "スナイパー",
       "damage": 55,
       "headDamage": 65,
-      "fireInterval": 2.9,
+      "fireInterval": 2,
       "magazine": 6,
       "reload": 2.5,
       "speed": 0.3,
@@ -75,8 +75,8 @@
       "range": 90,
       "pellets": 1,
       "spread": 0,
-      "chargeTime": 5,
-      "cockMax": 5
+      "chargeTime": 3,
+      "cockMax": 2
     }
   },
   "balance": {
