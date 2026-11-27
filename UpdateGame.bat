@@ -20,7 +20,7 @@ echo.
 echo Review the files above. Do not upload secrets or unrelated files.
 choice /c YN /m "Commit game changes and push to origin/main"
 if errorlevel 2 goto cancelled
-git add -- package.json server.js simulation.js public test UpdateGame.bat
+git add -- package.json server.js simulation.js rooms.js public balance.example.json UpdateGame.bat
 if errorlevel 1 goto failed
 for %%F in (package-lock.json render.yaml .gitignore README.md) do if exist "%%F" (
   git add -- "%%F"
