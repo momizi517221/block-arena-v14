@@ -171,7 +171,7 @@ function advice63(previous,p,targets,world,now,autoHeal=false,full=true){
  const escalation=a&&a.priority<(prev?.priority??99)&&a.priority<=2;
  const complete=prev&&(!prev.point&&(prev.kind==='survival'&&!low||prev.kind==='prepare'&&(prev.control==='skill48'?p.activeSkill||p.gauge<abilityConfig.scan.cost:!shortAmmo&&!p.reloadProgress))||arrived&&a&&a.kind===prev.kind&&!a.move);
  if(prev&&!goalDanger&&!escalation&&!complete){
-   if(prev.point){let waypoint=prev.waypoint||0,next=prev.route?.[waypoint];if(next&&waypoint<prev.route.length-1&&Math.hypot(p.x-next[0],p.y-next[1],p.z-next[2])<.55)waypoint++;if(!arrived&&now-prev.at<10)return {...prev,waypoint};if(!arrived&&a?.kind===prev.kind&&a.move&&guidePath62(p,prev.route?.[waypoint]||prev.point))return {...prev,waypoint};if(arrived&&a?.kind===prev.kind&&a.move)return {...prev,arrived:true,waypoint};}
+   if(prev.point){let waypoint=prev.waypoint||0,next=prev.route?.[waypoint];if(next&&waypoint<prev.route.length-1&&Math.hypot(p.x-next[0],p.y-next[1],p.z-next[2])<1.1&&guidePath62(p,prev.route[waypoint+1]))waypoint++;if(!arrived&&now-prev.at<10)return {...prev,waypoint};if(!arrived&&a?.kind===prev.kind&&a.move&&guidePath62(p,prev.route?.[waypoint]||prev.point))return {...prev,waypoint};if(arrived&&a?.kind===prev.kind&&a.move)return {...prev,arrived:true,waypoint};}
    else if(now-prev.at<10&&a?.kind===prev.kind&&(a.move===prev.move&&(!a.move||!full||p.grounded===false||p.motion)||prev.move===false&&a.move&&prev.why==='安全な誘導経路が見つかりません'))return a.move!==prev.move?prev:{...prev,action:a.action,why:a.why};
  }
  if(!a)return null;
@@ -180,7 +180,7 @@ function advice63(previous,p,targets,world,now,autoHeal=false,full=true){
  if(!a.move||!full||p.grounded===false||p.motion)return base;
  const safePriority=a.priority<=3;
  // A cover is usable only when it rises above this floor and is nearby horizontally.
- function cover64(q){let best=Infinity;for(let b of nearby53(q[0],q[2],3)){if(b[7]==='step'||b[7]==='rail'||b[3]<q[1]+.55||(b[5]||0)>q[1]+.65)continue;let dx=Math.max(0,Math.abs(q[0]-b[0])-b[2]/2),dz=Math.max(0,Math.abs(q[2]-b[1])-b[4]/2);let d=Math.hypot(dx,dz);if(d<best)best=d;}return best;}
+ function cover64(q){let best=Infinity;for(let b of nearby53(q[0],q[2],3)){if(b[7]==='step'||b[7]==='rail'||b[3]<q[1]+.55||(b[5]||0)>q[1]+.65||Math.max(b[2],b[4])>=20&&Math.min(b[2],b[4])<=1.1)continue;let dx=Math.max(0,Math.abs(q[0]-b[0])-b[2]/2),dz=Math.max(0,Math.abs(q[2]-b[1])-b[4]/2);let d=Math.hypot(dx,dz);if(d<best)best=d;}return best;}
  // Compare enemy-to-body exposure separately from eye-to-enemy firing opportunities.
  // This distinguishes partial cover from standing in an open corridor. No fake one-way LOS.
  function profile64(q){let incoming=0,shootable=0,hidden=0,nearestD=Infinity,threats=0;let eye=[q[0],q[1]+1.65*config.size,q[2]];for(let {e} of es){let d=Math.hypot(e.x-q[0],(e.y||0)-q[1],e.z-q[2]);nearestD=Math.min(nearestD,d);let eo=[e.x,(e.y||0)+1.65*config.size,e.z],range=weaponFor(e).range||45,weight=d<=range?1:.25;let body=abilityLOS(world,eo,[q[0],q[1]+.43,q[2]],e.id),head=abilityLOS(world,eo,[q[0],q[1]+.85,q[2]],e.id);if(body||head){incoming+=weight*((body?1:0)+(head?.65:0));threats++;}else hidden++;if(d<=weaponFor(p).range&&abilityLOS(world,eye,[e.x,(e.y||0)+.55,e.z],p.id))shootable++;}return {incoming,shootable,hidden,nearestD,threats,cover:cover64(q)};}
@@ -188,7 +188,7 @@ function advice63(previous,p,targets,world,now,autoHeal=false,full=true){
  function score(q,f){let d=Number.isFinite(f.nearestD)?f.nearestD:ideal,coverBonus=Math.max(0,1-f.cover/3),high=Math.min(4,q[1]);return safePriority?(-f.incoming*24+f.hidden*3+coverBonus*8+Math.min(d,40)*.06):(-f.incoming*5-Math.max(0,f.threats-1)*7+Math.min(1,f.shootable)*8+coverBonus*8+high*2.3-Math.abs(d-ideal)*.32);}
  let best=null,bestScore=score(origin,originProfile)+.65-(hazard?100:0),first=[];
  function consider(q,route,len){if(!q||guideHazard62(p,q,world,now))return;let f=profile64(q);if(safePriority&&f.incoming>originProfile.incoming+.001)return; // never recommend more exposure to escape
- if(!safePriority&&(f.cover>3&&q[1]<.7||!f.shootable&&f.cover>2))return; // don't send players to open ground for no tactical gain
+ if(!hazard&&f.cover>1.8)return; if(!safePriority&&!f.shootable&&f.cover>1.2)return; // don't send players to open ground for no tactical gain
  let s=score(q,f)-len*.10;if(s>bestScore){bestScore=s;best={q,route,f};}}
  const candidate=guideWalk64;
  for(let d of [3,6,9])for(let k=0;k<8;k++){let angle=k*Math.PI/4,q=candidate(origin,p.x+Math.sin(angle)*d,p.z+Math.cos(angle)*d);if(q){consider(q,[q],d);if(d===3)first.push(q);}}
