@@ -1,21 +1,5 @@
 {
   "weapons": {
-    "pistol": {
-      "name": "ピストル",
-      "damage": 10,
-      "headDamage": 25,
-      "fireInterval": 0.3,
-      "magazine": 10,
-      "reload": 1,
-      "speed": 1,
-      "adsSpeed": 0.9,
-      "zoom": 1.2,
-      "range": 40,
-      "pellets": 1,
-      "spread": 0,
-      "comboBonus": 0.1,
-      "comboCap": 5
-    },
     "smg": {
       "name": "サブマシンガン",
       "damage": 4,
@@ -26,7 +10,7 @@
       "speed": 0.6,
       "adsSpeed": 0.85,
       "zoom": 1.3,
-      "range": 35,
+      "range": 10,
       "pellets": 1,
       "spread": 0,
       "chargeTime": 1,
@@ -42,7 +26,7 @@
       "speed": 0.8,
       "adsSpeed": 0.8,
       "zoom": 1.2,
-      "range": 22,
+      "range": 8,
       "pellets": 8,
       "spread": 0.14,
       "chargeTime": 1.5,
@@ -58,7 +42,7 @@
       "speed": 0.5,
       "adsSpeed": 0.75,
       "zoom": 1.6,
-      "range": 60,
+      "range": 20,
       "pellets": 1,
       "spread": 0
     },
@@ -72,7 +56,7 @@
       "speed": 0.3,
       "adsSpeed": 0.4,
       "zoom": 3,
-      "range": 90,
+      "range": 30,
       "pellets": 1,
       "spread": 0,
       "chargeTime": 3,
